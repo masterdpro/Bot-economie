@@ -21,6 +21,6 @@ jobs:
         key: 1234
         port: 22
         script: |
-          cd /path/to/your/code
+          cd "/home/youri/testBot/"
           git pull origin main
           # Add any additional steps to start your application here
