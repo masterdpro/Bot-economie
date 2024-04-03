@@ -1,0 +1,26 @@
+name: Deploy to Raspberry Pi
+
+on:
+  push:
+    branches:
+      - main  # Adjust this to match your branch name
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: SSH into Raspberry Pi and deploy
+      uses: appleboy/ssh-action@master
+      with:
+        host: youri
+        username: youri
+        key: 1234
+        port: 22
+        script: |
+          cd /path/to/your/code
+          git pull origin main
+          # Add any additional steps to start your application here
