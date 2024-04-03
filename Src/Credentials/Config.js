@@ -1,5 +1,5 @@
 module.exports = {
     prefix: ["p!"],
-    botToken: "0",
+   // botToken: "",
     ownerIds: ["722450303919587409"]
 };
