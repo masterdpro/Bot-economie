@@ -16,9 +16,9 @@ jobs:
     - name: SSH into Raspberry Pi and deploy
       uses: appleboy/ssh-action@master
       with:
-        host: 10.0.0.163
+        host: youri
         username: youri
-        key: 1234
+        key: AAAAB3NzaC1yc2EAAAADAQABAAABgQDV+WPXvegXt9BnKA2/XYiAfPifowbPecjfJv5Wvk54oCqA/GZfbF+jry7Vku7EMdU9ksxYyJfXp0H8ozlIYIgorkkJIKxVOqrYx8c5Rbr28/i38sUDMCf71JIVJQZghrQNBnZSYmT6gL/9+C2v+2BDpNGOHDNGSfgUMOsaJPxpO2oELT8tpFf5CMUdU+OT9ObafAemTMVSL0AM/oRuGZe0UbhMmHPtcX+sBh8Hy1msuaVp1k+FdIiP7lZCMsbXre9LP8tVmlkp27GWx/BPXC2zH8WOuMISbKo9ivqCWcB66pYdgPcxfhmd+pBD6cQNLKcD5VUaK6ZF6qFml19iar2+68veBkcxU6Goq5gmnRfXGyUn5G7dIcUdfueGqKTkiwf0sVBnUdAifO1fQU2gyUKg2PGXyZLPMD1RgIj3tV3iA/tie4IwhajsBO3IAR5CU7Z4RPuwvODUVR08NRECGUDJtNa21NoIQZHjkuX9t1KkX8bEUlfqK3mk9WfqhjKTmcU
         port: 22
         script: |
           cd "/home/youri/testBot/"
