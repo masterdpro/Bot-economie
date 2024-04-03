@@ -18,9 +18,9 @@ jobs:
       with:
         host: youri
         username: youri
-        key: 
+        key: ${{secrets.ssh}}
         port: 22
-        script: ${{secrets.ssh}}
+        script: |
           cd "/home/youri/testBot/"
           git pull origin main
           # Add any additional steps to start your application here
