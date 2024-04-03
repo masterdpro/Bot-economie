@@ -18,7 +18,7 @@ jobs:
       with:
         host: youri
         username: youri
-        key: ${{secrets.ssh}}
+        key: ${{ secrets.SSH }}
         port: 22
         script: |
           cd "/home/youri/testBot/"
