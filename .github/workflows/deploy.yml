@@ -16,7 +16,7 @@ jobs:
     - name: SSH into Raspberry Pi and deploy
       uses: appleboy/ssh-action@master
       with:
-        host: youri
+        host: youri@10.0.0.163
         username: youri
         key: 1234
         port: 22
