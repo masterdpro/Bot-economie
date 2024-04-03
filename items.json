@@ -1,0 +1,6 @@
+[
+    {"name": "nerf", "description": "Pistollet basique, mais efficasse", "rarity": "commun", "price": 100},
+    {"name": "test", "description": "Pistollet basique, mais efficasse", "rarity": "legendaire", "price": 100},
+    {"name": "sword", "description": "Pistollet basique, mais efficasse", "rarity": "epique", "price": 100}
+] 
+

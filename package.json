@@ -1,0 +1,22 @@
+{
+  "name": "discordbot-template",
+  "version": "8.0.2",
+  "description": "Just your average discord bot template",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "cron": "^2.4.3",
+    "discord.js": "^14.9.0",
+    "mariadb": "^3.3.0",
+    "mongodb": "^6.2.0",
+    "mongoose": "^7.6.3",
+    "mysql": "^2.18.1",
+    "node-cron": "^3.0.2",
+    "node-recursive-directory": "^1.2.0"
+  },
+  "author": "RileCraft",
+  "license": "MIT"
+}

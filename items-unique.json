@@ -1,0 +1,44 @@
+[
+  {
+    "name": "stormbreaker",
+    "description": "La hache du tonnerre !",
+    "many": false,
+    "price": -0,
+    "color": "blue"
+  },
+  {
+    "name": "excalibur",
+    "description": "Épée légandaire du roi Arthur !",
+    "many": false,
+    "price": -0,
+    "color": "silver"
+  },
+  {
+    "name": "épée des héros",
+    "description": "Épée forgée par les quatres frères pour defendre les montagnes",
+    "many": false,
+    "price": -0,
+    "color": "green"
+  },
+  {
+    "name": "baton de jade",
+    "description": "Héritage de maitre Oogway..",
+    "many": false,
+    "price": -0,
+    "color": "green"
+  },
+  {
+    "name": "ban hammer",
+    "description": "Meilleur outil pour ce débarasser des voilloux",
+    "many": true,
+    "price": -0,
+    "color": "white"
+  },
+  {
+    "name": "nokia hammer",
+    "description": "Une seule arme peut faire face au ban hammer!",
+    "many": true,
+    "price": -0,
+    "color": "black"
+  }
+]
