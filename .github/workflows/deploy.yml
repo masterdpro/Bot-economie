@@ -19,11 +19,10 @@ jobs:
         host: youri
         username: youri
         password: 1234
-        #key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCldETlZ3gEmoqtrr6ZBhvYFFsn2ghNze8tgDpJ8uFE54pD9jbH0M8530F5cFYBLXVq1GOqU2sgDKxlJ2aCGW6H/5vfhhP3AYHF8Wk/SnXPVOuSu+lSs1DkWd3f8PB7XgwtRWxS1q97u6YbVonQ/STHHKq3L02nqpmMNetZRhamnL8wvbV0NLq1ufqg/cU4A+Is1vgWcdxGkTRX2dCM1vCcgr7ov8QZHk3v1uhrNv3aoFVZGcrdFqpuBGPMa3HrQ/AF+7XLKFj2lCvYfvq6DW6il6dQ6ZZbPDstKzuciQzcetQn/zz4d6uV58tTSf/irhGL5ta2ePOINITj3BbOnRpH0ti9x7j6ilKo6P3ZBssgOPMXO44e0IK4k+4zBcYuMitUyiKDX+NdMPs4lp/4f5ZMAyETaPNmwk4ApUVq7FD11awdSVK5sG3JOnkCQGmYEuj08OgELd+xSA3JaO04auTydsaNaH3RxTkacosmPfYo2H3T/pmvjEnIwKn0HLsFD6//dEn80KhUBBgmoKgutBFWMy0/N4LAcdaCk6yVa+I88wJy/Ug6jYkPm98X+KRCwdyY6Nnn2/wMlpgGt3k3LPg7Gem1/n/lBTHGbiP4nEVvQoL1kCoVmZUj0x5hH0dv+i9ZTlOBnhXtMZicqZL+iU0Tjg1ACgf/0s5A342YVvCdXw== youri.d2.bel@gmail.com
         port: 22
         script: |
           cd "/home/youri/testBot/"
           git pull origin main
-          npm i
-          node bot.js
+          npm install
+          npm start
           # Add any additional steps to start your application here
