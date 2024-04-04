@@ -25,4 +25,4 @@ jobs:
             git pull origin main
             /home/youri/.nvm/versions/node/v20.12.1/bin/npm install  # Install dependencies
             /home/youri/.nvm/versions/node/v20.12.1/bin/npm start
-            # Add any additional steps to start your application herea
+            # Add any additional steps to start your application here
