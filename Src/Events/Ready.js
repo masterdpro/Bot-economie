@@ -18,7 +18,7 @@ module.exports = {
             type: ActivityType.Watching,
         });
 
-        
+        //banane
 
         let allSlashCommands = 0;
         const slashCommandsTotalFiles = await directorySearch(`${rootPath}/Src/Interactions/SlashCommands`);
