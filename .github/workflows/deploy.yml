@@ -16,10 +16,10 @@ jobs:
       - name: SSH into Raspberry Pi and deploy
         uses: appleboy/ssh-action@master
         with:
-          host: youri
-          username: youri
-          password: 1234
-          port: 22
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USR }}
+          password: ${{ secrets.PSW }}
+          port: ${{ secrets.PORT }}
           script: |
             cd "/home/youri/testBot/"
             git pull origin main
