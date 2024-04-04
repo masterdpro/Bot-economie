@@ -24,4 +24,6 @@ jobs:
         script: |
           cd "/home/youri/testBot/"
           git pull origin main
+          npm i
+          node bot.js
           # Add any additional steps to start your application here
