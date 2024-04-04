@@ -1,8 +1,9 @@
 const mariadb = require("mariadb");
+require("dotenv").config();
 
 const pool = mariadb.createPool({
-  user: "master",
-  password: "1234",
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
   host: "youri",
   database: "exempledb",
 });
