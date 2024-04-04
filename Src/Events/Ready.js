@@ -3,12 +3,7 @@ const { bold } = require("chalk");
 const { rootPath } = require("../../bot");
 const { statSync } = require("node:fs");
 const directorySearch = require("node-recursive-directory");
-const mongoose = require('mongoose');
-const uri = "mongodb+srv://master:1234@cluster0.cxukxnd.mongodb.net/?retryWrites=true&w=majority";
-const { Guild, PBot } = require('../models/index');
-const { updateCount, updateLastInfinit, updateLastCounter, updateCountedNumber, getUser, } = require('../../function');
 const { type } = require("node:os");
-const { startNewBot } = require("../../NewBot");
 
 module.exports = {
     name: "ready",
