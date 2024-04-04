@@ -2,8 +2,8 @@ const mariadb = require("mariadb");
 require("dotenv").config();
 
 const pool = mariadb.createPool({
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
+  user: process.env.DB_USR,
+  password: process.env.DB_PSW,
   host: "youri",
   database: "exempledb",
 });
