@@ -40,5 +40,12 @@
     "many": true,
     "price": -0,
     "color": "black"
+  },
+  {
+    "name": "sabre laser",
+    "description": "Arme encestrale des jedi et des sith",
+    "many": true,
+    "price": -0,
+    "color": "green"
   }
 ]
