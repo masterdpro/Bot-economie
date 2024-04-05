@@ -1,6 +1,7 @@
 const mariadb = require("mariadb");
 require("dotenv").config();
 
+const minerais = require("./mineral.json");
 
 const pool = mariadb.createPool({
   user: process.env.DB_USR,
@@ -31,8 +32,6 @@ async function createTable(tableName, columns) {
   }
 }
 
-
-
 async function dropTable(tableName) {
   let conn;
   try {
@@ -50,7 +49,6 @@ async function dropTable(tableName) {
     }
   }
 }
-
 
 async function insertData(Table, fieldsProperties, data) {
   let conn;
@@ -202,6 +200,7 @@ async function createUser(id) {
     });
 
     const inventory = JSON.stringify({});
+    const mine = JSON.stringify({});
     const work_delay = JSON.stringify({
       timestamp: 0,
       delay: 3600000,
@@ -220,8 +219,8 @@ async function createUser(id) {
     if (!exist) {
       await insertData(
         "users",
-        ["user_id", "coins", "inventory", "work_delay", "hunt_delay"],
-        [[id, 0, inventory, work_delay, hunt_delay]]
+        ["user_id", "coins", "inventory", "work_delay", "hunt_delay", "mine"],
+        [[id, 0, inventory, work_delay, hunt_delay, mine]]
       );
     }
   } catch (error) {
@@ -291,6 +290,77 @@ async function work(id, timestamp) {
   }
 }
 
+async function mine(id, timestamp) {
+  const user = await getUser(id);
+
+  const mineDelay = JSON.parse(user.hunt_delay).delay;
+  const lastWork = JSON.parse(user.hunt_delay).timestamp;
+  const level = JSON.parse(user.hunt_delay).level;
+
+  if (timestamp - lastWork < mineDelay) {
+    console.log("You cant work");
+    return "early";
+  }
+
+  let mineInv = JSON.parse(user.mine);
+  if (!mineInv) mineInv = {};
+  const mine = minerais[Math.floor(Math.random() * minerais.length)];
+
+  console.log(mine)
+  const newInv = mineInv[mine] ? mineInv[mine] + 1 : 1;
+  if (mineInv[mine.name]) {
+    mineInv[mine.name] += 1;
+  } else {
+    mineInv[mine.name] = 1;
+  }
+  console.log(mineInv)
+
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    const editDataQuery = `
+                UPDATE users
+                SET mine = '${JSON.stringify(mineInv)}',
+                hunt_delay = '${JSON.stringify({
+                  timestamp: timestamp,
+                  delay: mineDelay,
+                  level: 0,
+                })}'
+                WHERE user_id = ${id}
+            `;
+    await conn.query(editDataQuery);
+    return mine;
+  } catch (err) {
+    throw err;
+  } finally {
+    if (conn) {
+      conn.end();
+    }
+  }
+}
+
+async function resetHuntDelay(id) {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    const editDataQuery = `
+                UPDATE users
+                SET hunt_delay = '${JSON.stringify({
+                  timestamp: 0,
+                  delay: 3600000,
+                  level: 0,
+                })}'
+                WHERE user_id = ${id}
+            `;
+    await conn.query(editDataQuery);
+  } catch (err) {
+    throw err;
+  } finally {
+    if (conn) {
+      conn.end();
+    }
+  }
+}
 
 async function addItem(id, item, amount) {
   const user = await getUser(id);
@@ -318,7 +388,6 @@ async function addItem(id, item, amount) {
       conn.end();
     }
   }
-
 }
 
 //export my function
@@ -334,4 +403,6 @@ module.exports = {
   getUser,
   work,
   addItem,
+  mine,
+  resetHuntDelay,
 };

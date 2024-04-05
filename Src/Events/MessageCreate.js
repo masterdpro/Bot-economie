@@ -13,7 +13,7 @@ module.exports = {
 
       db.createUser(message.author.id);
       if (message.content === '!reset'){
-        db.deleteData("users", 6)
+        db.resetHuntDelay(message.author.id)
       }
 
       if(message.content === '!item'){
