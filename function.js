@@ -1,6 +1,7 @@
 const mariadb = require("mariadb");
 require("dotenv").config();
 
+
 const pool = mariadb.createPool({
   user: process.env.DB_USR,
   password: process.env.DB_PSW,
@@ -30,6 +31,8 @@ async function createTable(tableName, columns) {
   }
 }
 
+
+
 async function dropTable(tableName) {
   let conn;
   try {
@@ -47,6 +50,7 @@ async function dropTable(tableName) {
     }
   }
 }
+
 
 async function insertData(Table, fieldsProperties, data) {
   let conn;

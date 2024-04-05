@@ -13,7 +13,7 @@ module.exports = {
   name: "itemUniqueButton",
   ownerOnly: false,
 
-  run: async (client, interaction, db) => {
+  run: async (interaction, client,  db) => {
     interaction.deferUpdate();
 
     const user = await db.getUser(interaction.user.id);

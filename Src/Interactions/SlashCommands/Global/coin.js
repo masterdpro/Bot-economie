@@ -5,7 +5,7 @@ module.exports = {
   type: ApplicationCommandType.ChatInput,
   description: "le nombre d'argent que vous avez",
 
-  run: async (client, interaction, db) => {
+  run: async (interaction, client,  db) => {
     const user = await db.getUser(interaction.user.id);
     const totalMoney = user.coins;
 

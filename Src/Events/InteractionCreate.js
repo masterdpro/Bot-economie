@@ -7,71 +7,105 @@ module.exports = {
   run: async (interaction, client) => {
     db.createUser(interaction.user.id).then(async () => {
       try {
-        if (
-          interaction.isChatInputCommand() ||
-          interaction.isContextMenuCommand()
-        ) {
+        if (interaction.isChatInputCommand()) {
           const slashCommand = client.slashCommands.get(
             interaction.commandName
           );
           if (!slashCommand) return;
-          const authenticatedCMDOptions = await commandOptionsProcessor(
-            client,
-            interaction,
-            slashCommand,
-            true,
-            "SlashCommand"
+
+          if (
+            !(await commandOptionsProcessor(
+              client,
+              interaction,
+              slashCommand,
+              "SlashCommand"
+            ))
+          )
+            return;
+          else slashCommand.run(interaction, client, db);
+        } else if (interaction.isAutocomplete()) {
+          const slashCommand = client.slashCommands.get(
+            interaction.commandName
           );
-          if (authenticatedCMDOptions)
-            return await slashCommand.run(client, interaction, db);
+          if (!slashCommand || !slashCommand.autocomplete) return;
+
+          if (
+            !(await commandOptionsProcessor(
+              client,
+              interaction,
+              slashCommand,
+              "SlashCommand"
+            ))
+          )
+            return;
+          else slashCommand.autocomplete(interaction, client, db);
+        } else if (interaction.isContextMenuCommand()) {
+          const contextMenu = client.contextMenus.get(interaction.commandName);
+          if (!contextMenu) return;
+
+          if (
+            !(await commandOptionsProcessor(
+              client,
+              interaction,
+              contextMenu,
+              "ContextMenu"
+            ))
+          )
+            return;
+          else contextMenu.run(interaction, client, db);
         } else if (interaction.isAnySelectMenu()) {
           const selectMenuCommand =
             client.selectMenus.get(interaction.values[0]) ??
             client.selectMenus.get(interaction.customId);
           if (!selectMenuCommand) return;
-          const authenticatedCMDOptions = await commandOptionsProcessor(
-            client,
-            interaction,
-            selectMenuCommand,
-            true,
-            "SelectMenu"
-          );
-          if (authenticatedCMDOptions)
-            return await selectMenuCommand.run(client, interaction, db);
+
+          if (
+            !(await commandOptionsProcessor(
+              client,
+              interaction,
+              selectMenuCommand,
+              "SelectMenu"
+            ))
+          )
+            return;
+          else selectMenuCommand.run(interaction, client, db);
         } else if (interaction.isButton()) {
           const buttonInteraction = client.buttonCommands.get(
             interaction.customId
           );
           if (!buttonInteraction) return;
-          const authenticatedCMDOptions = await commandOptionsProcessor(
-            client,
-            interaction,
-            buttonInteraction,
-            true,
-            "Button"
-          );
-          if (authenticatedCMDOptions)
-            return await buttonInteraction.run(client, interaction, db);
+
+          if (
+            !(await commandOptionsProcessor(
+              client,
+              interaction,
+              buttonInteraction,
+              "Button"
+            ))
+          )
+            return;
+          else buttonInteraction.run(interaction, client, db);
         } else if (interaction.isModalSubmit()) {
           const modalInteraction = client.modalForms.get(interaction.customId);
           if (!modalInteraction) return;
-          const authenticatedCMDOptions = await commandOptionsProcessor(
-            client,
-            interaction,
-            modalInteraction,
-            true,
-            "ModalForm"
-          );
-          if (authenticatedCMDOptions)
-            return await modalInteraction.run(client, interaction, db);
+
+          if (
+            !(await commandOptionsProcessor(
+              client,
+              interaction,
+              modalInteraction,
+              "ModalForm"
+            ))
+          )
+            return;
+          else modalInteraction.run(interaction, client, db);
         }
       } catch (error) {
-        console.error(
-          `An error occurred while processing an interaction: ${error}`
-        );
-        interaction.reply(
-          "An error occurred while processing your request. Please try again later."
-        );
+        console.error(error);
+        interaction.reply({
+          content: "There was an error while executing this command!",
+          ephemeral: true,
+        });
       }
     });
   },

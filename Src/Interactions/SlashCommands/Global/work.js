@@ -5,7 +5,7 @@ module.exports = {
   type: ApplicationCommandType.ChatInput,
   description: "Travaillé pour gagner de l'argent",
 
-  run: async (client, interaction, db) => {
+  run: async (interaction,client,  db) => {
     const timestamp = Date.now();
     db.work(interaction.user.id, timestamp).then(async (res) => {
       if (res === "early") {

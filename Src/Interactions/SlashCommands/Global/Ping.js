@@ -4,7 +4,7 @@ module.exports = {
     type: ApplicationCommandType.ChatInput,
     description: "Pong",
 
-    run: async (client, interaction) => {
+    run: async (interaction, client) => {
         interaction.reply({
             content: `Ping is ${client.ws.ping}ms.`
         })
