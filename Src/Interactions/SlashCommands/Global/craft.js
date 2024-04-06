@@ -18,6 +18,7 @@ module.exports = {
   run: async (interaction, client, db) => {
     const user = await db.getUser(interaction.user.id);
     const inventory = JSON.parse(user.mine);
+    let minInv = inventory
     const minerais = Object.keys(inventory);
 
     const craft1 = new ButtonBuilder()
@@ -87,9 +88,9 @@ module.exports = {
         i.deferUpdate();
         const user = await db.getUser(interaction.user.id);
         const inventory = JSON.parse(user.mine);
-        const minerais = Object.keys(inventory);
-        const mineraisList = minerais.map((minerais) => {
-          return ` ${minerais} : ${inventory[minerais]}`;
+        const minerais = Object.keys(minInv);
+        let mineraisList = minerais.map((minerais) => {
+          return ` ${minerais} : ${minInv[minerais]}`;
         });
         const buttonNum = i.customId.split("craft")[1] * 1;
         let buttonPlace;
@@ -120,8 +121,39 @@ module.exports = {
           const mine = m.content.toLowerCase();
           if (!minerais.includes(mine)) {
             m.reply("Vous n'avez pas ce minerais");
+            m.delete();
+            Mcollector.stop();
             return;
           }
+
+
+          if(minInv[mine] === 0){
+            m.reply("Vous n'avez pas assez de minerais");
+            m.delete();
+            Mcollector.stop();
+            return;
+          }else{
+            
+            minInv[mine] = minInv[mine] - 1;
+
+            mineraisList = minerais.map((minerais) => {
+              return ` ${minerais} : ${minInv[minerais]}`;
+            })
+          
+            const embed = {
+              description: `**Choisissez le minerais que vous voulez ajouté:**
+              ${mineraisList.join(" | ")}
+                        `,
+              color: 0x2b2d31,
+            };
+            i.message.edit({
+              embeds: [embed],
+            });
+            
+
+          }
+
+
           let row;
           if (buttonNum <= 3) {
             buttonPlace = buttonNum;

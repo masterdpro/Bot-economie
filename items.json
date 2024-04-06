@@ -2,6 +2,7 @@
     {"name": "nerf", "description": "Pistollet basique, mais efficasse", "rarity": "commun", "price": 100, "craft": []},
     {"name": "test", "description": "Pistollet basique, mais efficasse", "rarity": "legendaire", "price": 100, "craft": []},
     {"name": "sword", "description": "Une épée narmol", "rarity": "commun", "price": 100, "craft": ["_", "fer", "_","_","fer","_","_","cuivre","_"]},
-    {"name": "boule de neige", "description": "Boule de neige a lancer sur tes amis !", "rarity": "commun", "price": 10, "craft": []}
+    {"name": "boule de neige", "description": "Boule de neige a lancer sur tes amis !", "rarity": "commun", "price": 10, "craft": []},
+    {"name": "baton de metale", "description": "Item de base pour tout bonne arme", "rarity": "commun", "price": 10, "craft": ["_", "fer", "_","_","fer","_","_","fer","_"]}
 ] 
 
