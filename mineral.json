@@ -1,6 +1,7 @@
 [
     {"name": "fer", "description": "Minerais de fer des plus basique", "rarity": "commun"},
     {"name": "cuivre", "description": "Minerais de cuivre élecrtisant", "rarity": "commun"},
-    {"name": "or", "description": "Minerais d'or éblouissant", "rarity": "commun"}
+    {"name": "or", "description": "Minerais d'or éblouissant", "rarity": "commun"},
+    {"name": "roche", "description": "Roche des plus normal", "rarity": "commun"}
 ] 
 
