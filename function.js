@@ -390,6 +390,10 @@ async function addItem(id, item, amount) {
   }
 }
 
+async function craftButton(interaction, client){
+
+}
+
 //export my function
 module.exports = {
   createTable,
