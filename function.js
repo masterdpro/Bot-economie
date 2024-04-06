@@ -306,14 +306,14 @@ async function mine(id, timestamp) {
   if (!mineInv) mineInv = {};
   const mine = minerais[Math.floor(Math.random() * minerais.length)];
 
-  console.log(mine)
+  console.log(mine);
   const newInv = mineInv[mine] ? mineInv[mine] + 1 : 1;
   if (mineInv[mine.name]) {
     mineInv[mine.name] += 1;
   } else {
     mineInv[mine.name] = 1;
   }
-  console.log(mineInv)
+  console.log(mineInv);
 
   let conn;
   try {
@@ -390,8 +390,55 @@ async function addItem(id, item, amount) {
   }
 }
 
-async function craftButton(interaction, client){
+function isCraftOfItem(craft, item) {
+  if (craft.length !== item.craft.length) {
+    return false;
+  }
 
+  for (let i = 0; i < craft.length; i++) {
+    if (craft[i] !== "_" && craft[i] !== item.craft[i]) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function colorText(text, color) {
+  let colorText = "";
+  let colorCode;
+
+  if (color === "blue" || color === "commun") {
+    colorText = `[2;34m${text} [0m`;
+    colorCode = 0x268BD2
+  }
+  if (color === "silver") {
+    colorText = `[2;38m${text} [0m`;
+    colorCode = 0x4F545C
+  }
+  if (color === "green" || color === "rare") {
+    colorText = `[2;36m${text} [0m`;
+    colorCode = 0x859900
+  }
+  if(color === "pink" || color === "epique") {
+    colorText = `[2;35m${text} [0m`;
+    colorCode = 0xD33682
+  }
+  if (color === "white") {
+    colorText = `[2;37m${text} [0m`;
+    colorCode = 0xFFFFFF
+  }
+  if (color === "black") {
+    colorText = `[2;30m${text} [0m`;
+    colorCode = 0x000000
+  }
+  if (color === "yellow" || color === "legendaire") {
+    colorText = `[2;33m${text} [0m`;
+    colorCode = 0xB58900
+  }
+
+  return{text: ` \`\`\`ansi\n${colorText}\`\`\` `, color: colorCode};
+  
 }
 
 //export my function
@@ -409,4 +456,6 @@ module.exports = {
   addItem,
   mine,
   resetHuntDelay,
+  isCraftOfItem,
+  colorText,
 };

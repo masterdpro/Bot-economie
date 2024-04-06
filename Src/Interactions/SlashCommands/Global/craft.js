@@ -57,6 +57,11 @@ module.exports = {
       .setLabel(`_`)
       .setStyle("Secondary");
 
+    const finishedCraft = new ButtonBuilder()
+      .setCustomId("finishedCraft")
+      .setLabel(`Craft`)
+      .setStyle("Primary");
+
     const row1 = new ActionRowBuilder()
       .addComponents(craft1)
       .addComponents(craft2)
@@ -70,10 +75,13 @@ module.exports = {
       .addComponents(craft8)
       .addComponents(craft9);
 
+    const row4 = new ActionRowBuilder().addComponents(finishedCraft);
+
     const filter = (i) => i.user.id === interaction.user.id;
     const collector = interaction.channel.createMessageComponentCollector({
       filter,
     });
+    let collectorIsOn = false;
     collector.on("collect", async (i) => {
       if (i.customId.startsWith("craft")) {
         i.deferUpdate();
@@ -83,12 +91,12 @@ module.exports = {
         const mineraisList = minerais.map((minerais) => {
           return ` ${minerais} : ${inventory[minerais]}`;
         });
-        const buttonNum = (i.customId.split("craft")[1])*1;
+        const buttonNum = i.customId.split("craft")[1] * 1;
         let buttonPlace;
 
         const embed = {
           description: `**Choisissez le minerais que vous voulez ajouté:**
-          ${mineraisList.join("\n")} 
+          ${mineraisList.join(" | ")} 
                     `,
           color: 0x2b2d31,
         };
@@ -103,17 +111,18 @@ module.exports = {
           time: 15000,
         });
         Mcollector.on("collect", async (m) => {
+
+          collectorIsOn = true;
           if (m.content === "stop") {
             Mcollector.stop();
             return;
           }
           const mine = m.content.toLowerCase();
           if (!minerais.includes(mine)) {
-            i.reply("Vous n'avez pas ce minerais");
+            m.reply("Vous n'avez pas ce minerais");
             return;
           }
           let row;
-          console.log(buttonNum);
           if (buttonNum <= 3) {
             buttonPlace = buttonNum;
             row = 0;
@@ -136,15 +145,11 @@ module.exports = {
               buttonPlace = 3;
             }
           }
-          console.log(buttonPlace)
 
           let oldComponents = [i.message.components[row].components];
           let componentList = [];
           let newComponents = oldComponents.map((component) => {
-            console.log(component[buttonPlace- 1].data.custom_id);
-            
-            if (component[buttonPlace- 1].data.custom_id === i.customId) {
-              console.log("here");
+            if (component[buttonPlace - 1].data.custom_id === i.customId) {
               const componentToChange = component[buttonPlace - 1];
               componentToChange.data.label = mine;
             }
@@ -154,6 +159,7 @@ module.exports = {
           let newRow1;
           let newRow2;
           let newRow3;
+          let newRow4;
           if (row === 0) {
             newComponents = new ActionRowBuilder().addComponents(
               newComponents[0]
@@ -164,7 +170,10 @@ module.exports = {
             newRow3 = new ActionRowBuilder().addComponents(
               i.message.components[2].components
             );
-            componentList = [newComponents, newRow2, newRow3];
+            newRow4 = new ActionRowBuilder().addComponents(
+              i.message.components[3].components
+            );
+            componentList = [newComponents, newRow2, newRow3, newRow4];
           } else if (row === 1) {
             newRow1 = new ActionRowBuilder().addComponents(
               i.message.components[0].components
@@ -175,7 +184,10 @@ module.exports = {
             newRow3 = new ActionRowBuilder().addComponents(
               i.message.components[2].components
             );
-            componentList = [newRow1, newComponents, newRow3];
+            newRow4 = new ActionRowBuilder().addComponents(
+              i.message.components[3].components
+            );
+            componentList = [newRow1, newComponents, newRow3, newRow4];
           } else {
             newRow1 = new ActionRowBuilder().addComponents(
               i.message.components[0].components
@@ -186,12 +198,21 @@ module.exports = {
             newComponents = new ActionRowBuilder().addComponents(
               newComponents[0]
             );
-            componentList = [newRow1, newRow2, newComponents];
+            newRow4 = new ActionRowBuilder().addComponents(
+              i.message.components[3].components
+            );
+            componentList = [newRow1, newRow2, newComponents, newRow4];
           }
 
           i.message.edit({
-            components: [componentList[0], componentList[1], componentList[2]],
+            components: [
+              componentList[0],
+              componentList[1],
+              componentList[2],
+              componentList[3],
+            ],
           });
+          m.delete();
           Mcollector.stop();
         });
       }
@@ -203,6 +224,6 @@ module.exports = {
         `,
       color: 0x2b2d31,
     };
-    interaction.reply({ embeds: [embed], components: [row1, row2, row3] });
+    interaction.reply({ components: [row1, row2, row3, row4] });
   },
 };
