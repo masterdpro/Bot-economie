@@ -437,36 +437,38 @@ function colorText(text, color) {
   let colorText = "";
   let colorCode;
 
+  color = color.toLowerCase();
+
   if (color === "blue" || color === "commun") {
-    colorText = `[2;34m${text} [0m`;
+    colorText = `[2;34m${text}[0m`;
     colorCode = 0x268BD2
   }
   if (color === "silver") {
-    colorText = `[2;38m${text} [0m`;
+    colorText = `[2;38m${text}[0m`;
     colorCode = 0x4F545C
   }
   if (color === "green" || color === "rare") {
-    colorText = `[2;36m${text} [0m`;
+    colorText = `[2;36m${text}[0m`;
     colorCode = 0x859900
   }
   if(color === "pink" || color === "epique") {
-    colorText = `[2;35m${text} [0m`;
+    colorText = `[2;35m${text}[0m`;
     colorCode = 0xD33682
   }
   if (color === "white") {
-    colorText = `[2;37m${text} [0m`;
+    colorText = `[2;37m${text}[0m`;
     colorCode = 0xFFFFFF
   }
   if (color === "black") {
-    colorText = `[2;30m${text} [0m`;
+    colorText = `[2;30m${text}[0m`;
     colorCode = 0x000000
   }
   if (color === "yellow" || color === "legendaire") {
-    colorText = `[2;33m${text} [0m`;
+    colorText = `[2;33m${text}[0m`;
     colorCode = 0xB58900
   }
 
-  return{text: ` \`\`\`ansi\n${colorText}\`\`\` `, color: colorCode};
+  return{text: `${colorText}`, color: colorCode};
   
 }
 

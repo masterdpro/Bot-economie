@@ -17,9 +17,10 @@ module.exports = {
 
   run: async (interaction, client, db) => {
     const user = await db.getUser(interaction.user.id);
-    const inventory = JSON.parse(user.mine);
-    let minInv = inventory
-    const minerais = Object.keys(inventory);
+    const MineraisInventory = JSON.parse(user.mine);
+    const ObjectInventory = JSON.parse(user.inventory);
+    let itemsInv = ObjectInventory;
+    let minInv = MineraisInventory
 
     const craft1 = new ButtonBuilder()
       .setCustomId("craft1")
@@ -61,6 +62,11 @@ module.exports = {
     const finishedCraft = new ButtonBuilder()
       .setCustomId("finishedCraft")
       .setLabel(`Craft`)
+      .setStyle("Success");
+      
+      const showItems = new ButtonBuilder()
+      .setCustomId("showItems")
+      .setLabel(`Items`)
       .setStyle("Primary");
 
     const row1 = new ActionRowBuilder()
@@ -76,7 +82,7 @@ module.exports = {
       .addComponents(craft8)
       .addComponents(craft9);
 
-    const row4 = new ActionRowBuilder().addComponents(finishedCraft);
+    const row4 = new ActionRowBuilder().addComponents(finishedCraft).addComponents(showItems);
 
     const filter = (i) => i.user.id === interaction.user.id;
     const collector = interaction.channel.createMessageComponentCollector({
@@ -87,7 +93,7 @@ module.exports = {
       if (i.customId.startsWith("craft")) {
         i.deferUpdate();
         const user = await db.getUser(interaction.user.id);
-        const inventory = JSON.parse(user.mine);
+        const items = Object.keys(itemsInv);
         const minerais = Object.keys(minInv);
         let mineraisList = minerais.map((minerais) => {
           return ` ${minerais} : ${minInv[minerais]}`;
@@ -118,23 +124,27 @@ module.exports = {
             Mcollector.stop();
             return;
           }
-          const mine = m.content.toLowerCase();
-          if (!minerais.includes(mine)) {
-            m.reply("Vous n'avez pas ce minerais");
+          const item = m.content.toLowerCase();
+          if (!minerais.includes(item) && !items.includes(item)) {
+            m.reply("Vous n'avez pas ce minerais/objet");
             m.delete();
             Mcollector.stop();
             return;
           }
 
 
-          if(minInv[mine] === 0){
-            m.reply("Vous n'avez pas assez de minerais");
+          if(minInv[item] === 0 && itemsInv[item] === 0){
+            m.reply("Vous n'avez pas assez de minerais ou d'objet pour craft cet item");
             m.delete();
             Mcollector.stop();
             return;
           }else{
             
-            minInv[mine] = minInv[mine] - 1;
+            if (itemsStored.find((i) => i.name === item)) {
+              itemsInv[item] = itemsInv[item] - 1;
+            }else{
+              minInv[item] = minInv[item] - 1;
+            }
 
             mineraisList = minerais.map((minerais) => {
               return ` ${minerais} : ${minInv[minerais]}`;
@@ -183,7 +193,7 @@ module.exports = {
           let newComponents = oldComponents.map((component) => {
             if (component[buttonPlace - 1].data.custom_id === i.customId) {
               const componentToChange = component[buttonPlace - 1];
-              componentToChange.data.label = mine;
+              componentToChange.data.label = item;
             }
             return component;
           });

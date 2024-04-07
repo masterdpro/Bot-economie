@@ -9,6 +9,7 @@ const {
 } = require("discord.js");
 const itemsStored = require("../../../../items.json");
 const uniqueItems = require("../../../../items-unique.json");
+const { colorText } = require("../../../../function");
 
 module.exports = {
   name: "inventory",
@@ -26,19 +27,19 @@ module.exports = {
         return;
       }
       if (!itemData) {
-        return `[2;37m[0m[2;47m[0m[2;42m[0m[2;46m[0m[0;2m[0m[2;32m[2;37m[2;37m[2;37m [0;37m[0;37m[0;37m[0;37m[0m[0;37m[0m[0;37m[0m[0;37m[0m[2;37m[2;34m${item}[0m[2;37m : [2;37m${inventory[item]}[0m[2;37m[2;30m [0m[2;37m                                      [0m[2;37m[0m[2;37m[0m[2;32m[2;37m[0m[2;32m[2;30m[0m[2;32m[0m[2;37m[0m`;
+        return `${colorText(item, "Blue").text}${colorText(` : `+inventory[item], "White").text}               `;
       }
       if (itemData.rarity === "commun") {
-        return `[2;37m[0m[2;47m[0m[2;42m[0m[2;46m[0m[0;2m[0m[2;32m[2;37m[2;37m[2;37m [0;37m[0;37m[0;37m[0;37m[0m[0;37m[0m[0;37m[0m[0;37m[0m[2;37m[2;34m${item}[0m[2;37m : [2;37m${inventory[item]}[0m[2;37m[2;30m [0m[2;37m                                      [0m[2;37m[0m[2;37m[0m[2;32m[2;37m[0m[2;32m[2;30m[0m[2;32m[0m[2;37m[0m`;
+        return `${colorText(item, "Blue").text}${colorText(` : `+inventory[item], "White").text}          `;
       }
       if (itemData.rarity === "rare") {
-        return `[2;37m[0m[2;47m[0m[2;42m[0m[2;46m[0m[0;2m[0m[2;32m[2;37m[2;37m[2;37m[2;32m ${item}[0m[2;37m[2;34m[0m[2;37m : [2;37m${inventory[item]}[0m[2;37m[2;30m [0m[2;37m                                      [0m[2;37m[0m[2;37m[0m[2;32m[2;37m[0m[2;32m[2;30m[0m[2;32m[0m[2;37m[0m`;
+        return `${colorText(item, "Green").text}${colorText(` : `+inventory[item], "White").text}       `;
       }
       if (itemData.rarity === "legendaire") {
-        return `[2;37m[0m[2;47m[0m[2;42m[0m[2;46m[0m[0;2m[0m[2;32m[2;37m[2;37m[2;37m[2;32m[2;33m[0m[2;32m[0m[2;37m[2;33m ${item}[0m[2;37m[2;35m[0m[2;37m : [2;37m${inventory[item]}[0m[2;37m[2;30m [0m[2;37m                                      [0m[2;37m[0m[2;37m[0m[2;32m[2;37m[0m[2;32m[2;30m[0m[2;32m[0m[2;37m[0m`;
+        return `${colorText(item, "Yellow").text}${colorText(` : `+inventory[item], "White").text}    `;
       }
       if (itemData.rarity === "epique") {
-        return `[2;37m[0m[2;47m[0m[2;42m[0m[2;46m[0m[0;2m[0m[2;32m[2;37m[2;37m[2;37m[2;32m[2;33m[0m[2;32m[0m[2;37m[2;35m ${item}[0m[2;37m : [2;37m${inventory[item]}[0m[2;37m[2;30m [0m[2;37m                                      [0m[2;37m[0m[2;37m[0m[2;32m[2;37m[0m[2;32m[2;30m[0m[2;32m[0m[2;37m[0m`;
+        return `${colorText(item, "Pink").text}${colorText(` : `+inventory[item], "White").text}       `;
       }
     });
 
@@ -55,6 +56,7 @@ module.exports = {
       .setStyle("Primary");
     const row1 = new ActionRowBuilder().addComponents(DisplayUnique);
 
+    console.log(itemsList);
     const embed = {
       description: `
       \`\`\`ansi
