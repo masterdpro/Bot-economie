@@ -339,6 +339,35 @@ async function mine(id, timestamp) {
   }
 }
 
+async function removeMinerals(id, mineral, amount) {
+  const user = await getUser(id);
+  const mineInv = JSON.parse(user.mine);
+
+  if (mineInv[mineral] < amount) {
+    return false;
+  }
+
+  mineInv[mineral] -= amount;
+
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    const editDataQuery = `
+                UPDATE users
+                SET mine = '${JSON.stringify(mineInv)}'
+                WHERE user_id = ${id}
+            `;
+    await conn.query(editDataQuery);
+    return true;
+  } catch (err) {
+    throw err;
+  } finally {
+    if (conn) {
+      conn.end();
+    }
+  }
+}
+
 async function resetHuntDelay(id) {
   let conn;
   try {
@@ -458,4 +487,5 @@ module.exports = {
   resetHuntDelay,
   isCraftOfItem,
   colorText,
+  removeMinerals
 };
