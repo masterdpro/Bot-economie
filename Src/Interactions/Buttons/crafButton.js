@@ -9,7 +9,7 @@ const {
 } = require("discord.js");
 const itemsStored = require("../../../items-unique.json");
 const items = require("../../../items.json");
-const { isCraftOfItem, colorText} = require("../../../function");
+const { isCraftOfItem, colorText } = require("../../../function");
 
 module.exports = {
   name: "finishedCraft",
@@ -38,49 +38,45 @@ module.exports = {
     });
 
     const ressourcesUsed = item.filter((item) => item !== "_");
-    console.log(ressourcesUsed) 
+    //console.log(ressourcesUsed);
     //if there's more than 1 same item return item: quantity
     const ressources = ressourcesUsed.reduce((acc, curr) => {
       acc[curr] = (acc[curr] || 0) + 1;
       return acc;
     }, {});
-    
-    //remove the ressource with db.removeMinerals(userid, ressource, quantity)
-  
-    for (const currentItem of items) {
-      if (isCraftOfItem(item, currentItem)) {
-          itemToCraft = currentItem;
-          craftMatched = true;
-          break;
-      }
-  }
 
-    if (!craftMatched) {
-        return;
+    for (const currentItem of items) {
+
+
+      if (isCraftOfItem(item, currentItem)) {
+        itemToCraft = currentItem;
+        craftMatched = true;
+        break;
+      }
     }
 
-    if(itemToCraft){
+    if (!craftMatched) {
+      return;
+    }
 
+    if (itemToCraft) {
       for (const [ressource, quantity] of Object.entries(ressources)) {
         db.removeMinerals(interaction.user.id, ressource, quantity);
-      }      
+      }
       db.addItem(interaction.user.id, itemToCraft.name, 1);
 
       let ressourcesUsedString = "";
       for (const [ressource, quantity] of Object.entries(ressources)) {
         ressourcesUsedString += `${ressource} x${quantity} `;
       }
-  
 
       embed = {
-        description: `Tu as crafté: \`\`\`ansi \n${colorText(itemToCraft.name, itemToCraft.rarity).text}\`\`\`\n*${itemToCraft.description}* - ${ressourcesUsedString}`,
-        color: colorText(itemToCraft.name, itemToCraft.rarity).color
+        description: `Tu as crafté: \`\`\`ansi \n${
+          colorText(itemToCraft.name, itemToCraft.rarity).text
+        }\`\`\`\n*${itemToCraft.description}* - ${ressourcesUsedString}`,
+        color: colorText(itemToCraft.name, itemToCraft.rarity).color,
       };
-
-      }
-    
-
-   
+    }
 
     const DisplayUnique = new ButtonBuilder()
       .setCustomId("invButton")

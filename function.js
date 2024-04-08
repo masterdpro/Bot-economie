@@ -85,9 +85,9 @@ async function insertData(Table, fieldsProperties, data) {
 }
 
 async function editData(tableName, id, data) {
-  if(tableName === "users" ) {
+  if (tableName === "users") {
     id = `user_id = ${id}`;
-  }else{
+  } else {
     id = `id = ${id}`;
   }
 
@@ -111,8 +111,6 @@ async function editData(tableName, id, data) {
     }
   }
 }
-
-
 
 async function deleteData(tableName, id) {
   let conn;
@@ -428,19 +426,22 @@ async function addItem(id, item, amount) {
 }
 
 function isCraftOfItem(craft, item) {
-  if (item.craft === null) return false;
+  // console.log(item);
+  if (item.craft === null) {
+    return false;
+  }
+  // console.log(item.craft);
   if (craft.length !== item.craft.length) {
     return false;
   }
 
-  if (item.craft !== craft) return false;
+
 
   for (let i = 0; i < craft.length; i++) {
     if (craft[i] !== "_" && craft[i] !== item.craft[i]) {
       return false;
     }
   }
-
   return true;
 }
 
@@ -563,7 +564,6 @@ async function addItemToShop(usrId, item, amount, price) {
   );
 }
 
-
 async function getShop() {
   const shop = await fetchData("shop");
   return shop;
@@ -579,7 +579,7 @@ async function updateUser(id, data) {
       SET inventory = ?
       WHERE user_id = ?
     `;
-    
+
     const values = [data[0].value, id]; // Assuming inventory is the first item in the data array
 
     console.log(values);
@@ -593,7 +593,6 @@ async function updateUser(id, data) {
     }
   }
 }
-
 
 //export my function
 module.exports = {
