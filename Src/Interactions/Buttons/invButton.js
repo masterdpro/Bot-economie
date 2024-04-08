@@ -47,7 +47,13 @@ module.exports = {
       .setCustomId("itemUniqueButton")
       .setLabel(`Unique`)
       .setStyle("Primary");
-    const row1 = new ActionRowBuilder().addComponents(DisplayUnique);
+
+    const DisplayMine = new ButtonBuilder()
+      .setCustomId("mineButton")
+      .setLabel(`Mine`)
+      .setStyle("Primary");  
+
+    const row1 = new ActionRowBuilder().addComponents(DisplayUnique).addComponents(DisplayMine);
 
     const embed = {
       description: `
