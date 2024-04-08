@@ -6,6 +6,7 @@ const {
   RoleSelectMenuBuilder,
   PermissionsBitField,
   ChannelSelectMenuBuilder,
+  ApplicationCommandOptionType,
 } = require("discord.js");
 const itemsStored = require("../../../../items.json");
 
@@ -13,12 +14,77 @@ module.exports = {
   name: "market",
   type: ApplicationCommandType.ChatInput,
   description: "le nombre d'argent que vous avez",
+  options: [
+    {
+      type: ApplicationCommandOptionType.String,
+      name: "item",
+      description: "L'item que tu veux vendre",
+      autocomplete: true,
+    },
+    {
+      type: ApplicationCommandOptionType.Number,
+      name: "price",
+      description: "Le prix de l'item",
+      required: false,
+    },
+    {
+      type: ApplicationCommandOptionType.Number,
+      name: "quantity",
+      description: "Nombre d'item à vendre",
+      required: false,
+    },
+  ],
+
+  autocomplete: async (interaction, client, db) => {
+    const focusedValue = interaction.options.getFocused();
+    const user = await db.getUser(interaction.user.id);
+    const inventory = JSON.parse(user.inventory);
+    const items = Object.keys(inventory);
+    const choices = items.map((item) => item);
+
+    const filtered = choices.filter((choice) =>
+      choice.startsWith(focusedValue)
+    );
+    interaction.respond(
+      filtered.map((choice) => ({ name: choice, value: choice }))
+    );
+  },
 
   run: async (interaction, client, db) => {
     const user = await db.getUser(interaction.user.id);
     const shop = await db.getShop();
+    const itemToSell = interaction.options.getString("item");
+    const price = interaction.options.getNumber("price");
+    const quantity = interaction.options.getNumber("quantity");
 
-    const Items = shop.map((item) => {
+    if (itemToSell && price && quantity) {
+      user; 
+      const inventory = JSON.parse(user.inventory);
+      
+      if (inventory[itemToSell]) {
+        //check if the user has enough items to sell
+        if (inventory[itemToSell] < quantity) {
+          interaction.reply(
+            `Vous n'avez pas assez de ${itemToSell} dans votre inventaire`
+          );
+          return;
+        }
+        db.addItemToShop(interaction.user.id, itemToSell, quantity, price);
+        interaction.reply(
+          `Vous avez ajouté ${quantity} ${itemToSell} à ${price}$ chacun`
+        );
+      } else {
+        interaction.reply("Vous n'avez pas cet item dans votre inventaire");
+      }
+      return;
+    }
+    //if one of the option is there but not the others
+    if (itemToSell || price || quantity) {
+      interaction.reply("Vous devez spécifier les trois options");
+      return;
+    }
+
+    let Items = shop.map((item) => {
       let itemName;
       let itemAmount;
 
@@ -33,6 +99,9 @@ module.exports = {
 
       return `**${itemName}** x${itemAmount} : ${item.price}$ - *${item.id}*`;
     });
+
+    //reverse the array to have the last items first
+    Items = Items.reverse();
 
     const numberOfItems = Items.length;
     const itemsPerPage = 5;
@@ -98,8 +167,7 @@ module.exports = {
         i.message.edit({ embeds: [embed1, embed2], components: [row1] });
 
         Mcollector.on("collect", async (m) => {
-            
-                  const item = shop.find((item) => {
+          const item = shop.find((item) => {
             if (item.id === m.content * 1) {
               return item;
             }
@@ -148,7 +216,7 @@ module.exports = {
               color: 0x2b2d31,
             };
             i.message.edit({ embeds: [embedEnd], components: [] });
-          }else{
+          } else {
             m.reply("Vous n'avez pas assez d'argent pour acheter cet item");
             m.delete();
           }

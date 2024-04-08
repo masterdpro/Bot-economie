@@ -524,11 +524,12 @@ async function checkIfSomeoneAsItem(item) {
   return userWithItem;
 }
 async function addItemToShop(usrId, item, amount, price) {
+  console.log(usrId, item, amount, price);
   const user = await getUser(usrId);
   const inventory = JSON.parse(user.inventory);
 
   if (inventory[item]) {
-    inventory[item] += amount;
+    inventory[item] -= amount;
   } else {
     inventory[item] = amount;
   }
