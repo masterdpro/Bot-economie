@@ -85,6 +85,12 @@ async function insertData(Table, fieldsProperties, data) {
 }
 
 async function editData(tableName, id, data) {
+  if(tableName === "users" ) {
+    id = `user_id = ${id}`;
+  }else{
+    id = `id = ${id}`;
+  }
+
   let conn;
   try {
     conn = await pool.getConnection();
@@ -93,7 +99,7 @@ async function editData(tableName, id, data) {
             SET ${data
               .map((field) => `${field.name} = ${field.value}`)
               .join(", ")}
-            WHERE id = ${id}
+            WHERE ${id}
         `;
     await conn.query(editDataQuery);
     console.log("Data updated successfully.");
@@ -105,6 +111,8 @@ async function editData(tableName, id, data) {
     }
   }
 }
+
+
 
 async function deleteData(tableName, id) {
   let conn;
@@ -420,9 +428,12 @@ async function addItem(id, item, amount) {
 }
 
 function isCraftOfItem(craft, item) {
+  if (item.craft === null) return false;
   if (craft.length !== item.craft.length) {
     return false;
   }
+
+  if (item.craft !== craft) return false;
 
   for (let i = 0; i < craft.length; i++) {
     if (craft[i] !== "_" && craft[i] !== item.craft[i]) {
@@ -441,36 +452,147 @@ function colorText(text, color) {
 
   if (color === "blue" || color === "commun") {
     colorText = `[2;34m${text}[0m`;
-    colorCode = 0x268BD2
+    colorCode = 0x268bd2;
   }
   if (color === "silver") {
     colorText = `[2;38m${text}[0m`;
-    colorCode = 0x4F545C
+    colorCode = 0x4f545c;
   }
   if (color === "green" || color === "rare") {
     colorText = `[2;36m${text}[0m`;
-    colorCode = 0x859900
+    colorCode = 0x859900;
   }
-  if(color === "pink" || color === "epique") {
+  if (color === "pink" || color === "epique") {
     colorText = `[2;35m${text}[0m`;
-    colorCode = 0xD33682
+    colorCode = 0xd33682;
   }
   if (color === "white") {
     colorText = `[2;37m${text}[0m`;
-    colorCode = 0xFFFFFF
+    colorCode = 0xffffff;
   }
   if (color === "black") {
     colorText = `[2;30m${text}[0m`;
-    colorCode = 0x000000
+    colorCode = 0x000000;
   }
   if (color === "yellow" || color === "legendaire") {
     colorText = `[2;33m${text}[0m`;
-    colorCode = 0xB58900
+    colorCode = 0xb58900;
   }
 
-  return{text: `${colorText}`, color: colorCode};
-  
+  return { text: `${colorText}`, color: colorCode };
 }
+
+async function removeMinerals(id, mineral, amount) {
+  const user = await getUser(id);
+  const mineInv = JSON.parse(user.mine);
+  console.log(mineInv);
+  if (mineInv[mineral] < amount || mineInv[mineral] === null) {
+    mineInv[mineral] = 0;
+  } else {
+    mineInv[mineral] -= amount;
+  }
+
+  console.log(mineInv);
+
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    const editDataQuery = `
+                UPDATE users
+                SET mine = '${JSON.stringify(mineInv)}'
+                WHERE user_id = ${id}
+            `;
+    await conn.query(editDataQuery);
+    return true;
+  } catch (err) {
+    throw err;
+  } finally {
+    if (conn) {
+      conn.end();
+    }
+  }
+}
+
+async function checkIfSomeoneAsItem(item) {
+  const users = await fetchData("users");
+  let userWithItem = null;
+  users.forEach((user) => {
+    if (user.inventory[item] > 0) {
+      userWithItem = user;
+    }
+  });
+  return userWithItem;
+}
+async function addItemToShop(usrId, item, amount, price) {
+  const user = await getUser(usrId);
+  const inventory = JSON.parse(user.inventory);
+
+  if (inventory[item]) {
+    inventory[item] += amount;
+  } else {
+    inventory[item] = amount;
+  }
+
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    const editDataQuery = `
+                UPDATE users
+                SET inventory = '${JSON.stringify(inventory)}'
+                WHERE user_id = ${usrId}
+            `;
+    await conn.query(editDataQuery);
+  } catch (err) {
+    throw err;
+  } finally {
+    if (conn) {
+      conn.end();
+    }
+  }
+
+  const itemJson = {
+    item: item,
+    amount: amount,
+  };
+
+  insertData(
+    "shop",
+    ["user_id", "price", "item"],
+    [[usrId, price, JSON.stringify(itemJson)]]
+  );
+}
+
+
+async function getShop() {
+  const shop = await fetchData("shop");
+  return shop;
+}
+
+async function updateUser(id, data) {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+
+    const editDataQuery = `
+      UPDATE users
+      SET inventory = ?
+      WHERE user_id = ?
+    `;
+    
+    const values = [data[0].value, id]; // Assuming inventory is the first item in the data array
+
+    console.log(values);
+    await conn.query(editDataQuery, values);
+    console.log("Data updated successfully.");
+  } catch (err) {
+    throw err;
+  } finally {
+    if (conn) {
+      conn.end();
+    }
+  }
+}
+
 
 //export my function
 module.exports = {
@@ -489,5 +611,9 @@ module.exports = {
   resetHuntDelay,
   isCraftOfItem,
   colorText,
-  removeMinerals
+  removeMinerals,
+  checkIfSomeoneAsItem,
+  addItemToShop,
+  getShop,
+  updateUser,
 };

@@ -1,26 +1,31 @@
 const { prefix } = require("../Credentials/Config");
 const commandOptionsProcessor = require("../Structures/CommandOptions/Processor");
 const { SelectMenuBuilder } = require("discord.js");
-const db = require("../../function.js")
+const db = require("../../function.js");
 
 module.exports = {
   name: "messageCreate",
   run: async (message, client) => {
-
-
     try {
       if (message.author.bot) return;
 
       db.createUser(message.author.id);
-      if (message.content === '!reset'){
-        db.resetHuntDelay(message.author.id)
+      if (message.content === "!reset") {
+        db.resetHuntDelay(message.author.id);
+      }
+      if (message.content === "!!kill") {
+        db.deleteData("users", 27);
       }
 
-      if(message.content === '!item'){
-        db.addItem(message.author.id, "stormbreaker", 1)
+      if (message.content === "!item") {
+        db.addItem(message.author.id, "stormbreaker", 1);
       }
-      if(message.content === '!drop'){
-        db.dropTable("item")
+      if (message.content === "!drop") {
+        db.dropTable("item");
+      }
+      if (message.content === "!removeMine") {
+        console.log("remove");
+        db.removeMinerals(message.author.id, "test", 1);
       }
 
       if (!Array.isArray(prefix)) return;

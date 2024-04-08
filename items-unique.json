@@ -30,22 +30,36 @@
   {
     "name": "ban hammer",
     "description": "Meilleur outil pour ce débarasser des voilloux",
-    "many": true,
+    "many": false,
     "price": -0,
     "color": "white"
   },
   {
     "name": "nokia hammer",
     "description": "Une seule arme peut faire face au ban hammer!",
-    "many": true,
+    "many": false,
     "price": -0,
     "color": "black"
   },
   {
-    "name": "sabre laser",
-    "description": "Arme encestrale des jedi et des sith",
-    "many": true,
+    "name": "piere de l'espace",
+    "description": "Pierre de l'espace, source de pouvoir te permert de faire JE SAIS PAS QUOI, elle a êtê trouvé xxx",
+    "many": false,
     "price": -0,
-    "color": "green"
+    "color": "blue"
+  },
+  {
+    "name": "pierre de l'esprit", 
+    "description": "Pierre de l'esprit, elle est capable de controlé l'esprit du bot et lui faire dit ce que tu souhaites, elle a êtê trouvé xxx",
+    "many": false,
+    "price": -0,
+    "color": "yellow"
+  },
+  {
+    "name": "pierre de la réalité",
+    "description": "Pierre de la réalité, elle te permet de changer la réalité, elle a êtê trouvé xxx",
+    "many": false,
+    "price": -0,
+    "color": "red"
   }
 ]

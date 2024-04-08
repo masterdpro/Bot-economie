@@ -1,9 +1,11 @@
 [
-    {"name": "nerf", "description": "Pistollet basique, mais efficasse", "rarity": "commun", "price": 100, "craft": []},
-    {"name": "test", "description": "Pistollet basique, mais efficasse", "rarity": "legendaire", "price": 100, "craft": []},
+    {"name": "nerf", "description": "Pistollet basique, mais efficasse", "rarity": "commun", "price": 100, "craft": null},
+    {"name": "test", "description": "Pistollet basique, mais efficasse", "rarity": "legendaire", "price": 100, "craft": null},
     {"name": "sword", "description": "Une épée narmol", "rarity": "commun", "price": 100, "craft": ["_", "fer", "_","_","fer","_","_","cuivre","_"]},
-    {"name": "boule de neige", "description": "Boule de neige a lancer sur tes amis !", "rarity": "commun", "price": 10, "craft": []},
+    {"name": "boule de neige", "description": "Boule de neige a lancer sur tes amis !", "rarity": "commun", "price": 10, "craft": null},
     {"name": "baton de metale", "description": "Item de base pour tout bonne arme", "rarity": "commun", "price": 10, "craft": ["_", "fer", "_","_","fer","_","_","fer","_"]},
-    {"name": "test sword", "description": "Épée de test !", "rarity": "legendaire", "price": "10000", "craft": ["_", "test", "_","_","test","_","_","baton de metale","_"]}
+    {"name": "test sword", "description": "Épée de test !", "rarity": "legendaire", "price": "10000", "craft": ["_", "test", "_","_","test","_","_","baton de metale","_"]},
+    {"name": "metale raffine", "description": "Du metale en mieux", "rarity": "rare", "price": "100", "craft": ["or", "or", "or","or","fer","or","or","or","or"]},
+    {"name": "sabre laser", "description": "tru truc", "rarity": "epique", "price": "1000", "craft":[]}
 ] 
 
