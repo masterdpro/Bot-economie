@@ -71,7 +71,7 @@ module.exports = {
       }
 
       embed = {
-        description: `Tu as crafté: \`\`\`ansi \n${
+        description: `Tu as crafté: \`\`\`ansi\n${
           colorText(itemToCraft.name, itemToCraft.rarity).text
         }\`\`\`\n*${itemToCraft.description}* - ${ressourcesUsedString}`,
         color: colorText(itemToCraft.name, itemToCraft.rarity).color,

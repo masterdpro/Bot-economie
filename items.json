@@ -61,5 +61,12 @@
     "rarity": "rare",
     "price": "100",
     "craft": ["_", "cuivre", "_", "_", "cuivre", "_", "_", "cuivre", "_"]
+  },
+  {
+    "name": "paratonnerre",
+    "description": "Item qui permet de canaliser les energie electrique",
+    "rarity": "rare",
+    "price": "1000",
+    "craft": ["_", "cuivre","_", "_","baton de cuivre","_","_","metale raffine","_"]
   }
 ]
