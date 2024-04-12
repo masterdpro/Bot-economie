@@ -17,7 +17,6 @@ module.exports = {
 
  autocomplete: (interaction) => {
     const focusedValue = interaction.options.getFocused();
-		//choices = tous les items du fichier items.json, itemStored.name : itemStored.price
         const choices = [...itemsStored.map(item => item.name)]
 		const filtered = choices.filter(choice => choice.startsWith(focusedValue));
 		interaction.respond(
