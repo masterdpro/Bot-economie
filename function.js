@@ -435,8 +435,6 @@ function isCraftOfItem(craft, item) {
     return false;
   }
 
-
-
   for (let i = 0; i < craft.length; i++) {
     if (craft[i] !== "_" && craft[i] !== item.craft[i]) {
       return false;
@@ -594,6 +592,63 @@ async function updateUser(id, data) {
   }
 }
 
+async function UseItem(id, item, delay, timestamp){
+  const user = await getUser(id);
+  const inventory = JSON.parse(user.inventory);
+  let itemUses = JSON.parse(user.item_use);
+  console.log(itemUses);
+  const itemUsed = itemUses[item] ? itemUses[item] : 0;
+  if(itemUses === null){
+    itemUses = {};
+  }
+  if(itemUsed = 0){
+    //add item to itemUses, {itemName: delay}
+    itemUses[item] = delay;
+    //Push it to the database
+    let conn;
+    try {
+      conn = await pool.getConnection();
+      const editDataQuery = `
+                  UPDATE users
+                  SET item_uses = '${JSON.stringify(itemUses)}'
+                  WHERE user_id = ${id}
+              `;
+      await conn.query(editDataQuery);
+    } catch (err) {
+      throw err;
+    } finally {
+      if (conn) {
+        conn.end();
+      }
+    }
+    return "use";
+  }else{
+    const itemDelay = itemUses[item];
+    if(timestamp - itemDelay < delay){
+      return "early";
+    }
+    itemUses[item] = delay;
+    let conn;
+    try {
+      conn = await pool.getConnection();
+      const editDataQuery = `
+                  UPDATE users
+                  SET item_uses = '${JSON.stringify(itemUses)}'
+                  WHERE user_id = ${id}
+              `;
+      await conn.query(editDataQuery);
+    } catch (err) {
+      throw err;
+    } finally {
+      if (conn) {
+        conn.end();
+      }
+    }
+    return "use";
+  }
+
+}
+
 //export my function
 module.exports = {
   createTable,
@@ -616,4 +671,5 @@ module.exports = {
   addItemToShop,
   getShop,
   updateUser,
+  UseItem,
 };

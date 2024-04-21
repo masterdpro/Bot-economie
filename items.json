@@ -67,6 +67,8 @@
     "description": "Item qui permet de canaliser les energie electrique",
     "rarity": "rare",
     "price": "1000",
-    "craft": ["_", "cuivre","_", "_","baton de cuivre","_","_","metale raffine","_"]
+    "craft": ["_", "cuivre","_", "_","baton de cuivre","_","_","metale raffine","_"],
+    "usable": true,
+    "usage": ["electrique", "1"]
   }
 ]
